@@ -8,6 +8,7 @@
 
 #import "AwesomeMenu.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIImage+DarkOverlay.h"
 
 static CGFloat const kAwesomeMenuDefaultNearRadius = 110.0f;
 static CGFloat const kAwesomeMenuDefaultEndRadius = 120.0f;
@@ -64,10 +65,11 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
         self.menusArray = aMenusArray;
         
         // add the "Add" Button.
-        _addButton = [[AwesomeMenuItem alloc] initWithImage:[UIImage imageNamed:@"bg-addbutton.png"]
-                                       highlightedImage:[UIImage imageNamed:@"bg-addbutton-highlighted.png"] 
-                                           ContentImage:[UIImage imageNamed:@"icon-plus.png"] 
-                                highlightedContentImage:[UIImage imageNamed:@"icon-plus-highlighted.png"]];
+        UIImage *addImage = [UIImage imageNamed:@"dashboard-info.png"];
+        _addButton = [[AwesomeMenuItem alloc] initWithImage:addImage
+                                       highlightedImage:[addImage darkenedOverlayImage]
+                                           ContentImage:nil
+                                highlightedContentImage:nil];
         _addButton.delegate = self;
         _addButton.center = self.startPoint;
         [self addSubview:_addButton];

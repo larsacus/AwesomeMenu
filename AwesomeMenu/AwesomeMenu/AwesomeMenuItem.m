@@ -8,15 +8,14 @@
 
 #import "AwesomeMenuItem.h"
 static inline CGRect ScaleRect(CGRect rect, float n) {return CGRectMake((rect.size.width - rect.size.width * n)/ 2, (rect.size.height - rect.size.height * n) / 2, rect.size.width * n, rect.size.height * n);}
+
+@interface AwesomeMenuItem()
+
+@property (nonatomic, strong, readwrite) UIImageView *contentImageView;
+
+@end
+
 @implementation AwesomeMenuItem
-
-@synthesize contentImageView = _contentImageView;
-
-@synthesize startPoint = _startPoint;
-@synthesize endPoint = _endPoint;
-@synthesize nearPoint = _nearPoint;
-@synthesize farPoint = _farPoint;
-@synthesize delegate  = _delegate;
 
 #pragma mark - initialization & cleaning up
 - (id)initWithImage:(UIImage *)img 
@@ -29,17 +28,11 @@ highlightedContentImage:(UIImage *)hcimg;
         self.image = img;
         self.highlightedImage = himg;
         self.userInteractionEnabled = YES;
-        _contentImageView = [[UIImageView alloc] initWithImage:cimg];
-        _contentImageView.highlightedImage = hcimg;
-        [self addSubview:_contentImageView];
+        self.contentImageView = [[UIImageView alloc] initWithImage:cimg];
+        self.contentImageView.highlightedImage = hcimg;
+        [self addSubview:self.contentImageView];
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [_contentImageView release];
-    [super dealloc];
 }
 #pragma mark - UIView's methods
 - (void)layoutSubviews
@@ -48,17 +41,20 @@ highlightedContentImage:(UIImage *)hcimg;
     
     self.bounds = CGRectMake(0, 0, self.image.size.width, self.image.size.height);
     
-    float width = _contentImageView.image.size.width;
-    float height = _contentImageView.image.size.height;
-    _contentImageView.frame = CGRectMake(self.bounds.size.width/2 - width/2, self.bounds.size.height/2 - height/2, width, height);
+    float width = self.contentImageView.image.size.width;
+    float height = self.contentImageView.image.size.height;
+    self.contentImageView.frame = CGRectMake(self.bounds.size.width/2 - width/2,
+                                             self.bounds.size.height/2 - height/2,
+                                             width,
+                                             height);
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     self.highlighted = YES;
-    if ([_delegate respondsToSelector:@selector(AwesomeMenuItemTouchesBegan:)])
+    if ([self.delegate respondsToSelector:@selector(AwesomeMenuItemTouchesBegan:)])
     {
-       [_delegate AwesomeMenuItemTouchesBegan:self];
+       [self.delegate AwesomeMenuItemTouchesBegan:self];
     }
     
 }
@@ -79,9 +75,9 @@ highlightedContentImage:(UIImage *)hcimg;
     CGPoint location = [[touches anyObject] locationInView:self];
     if (CGRectContainsPoint(ScaleRect(self.bounds, 2.0f), location))
     {
-        if ([_delegate respondsToSelector:@selector(AwesomeMenuItemTouchesEnd:)])
+        if ([self.delegate respondsToSelector:@selector(AwesomeMenuItemTouchesEnd:)])
         {
-            [_delegate AwesomeMenuItemTouchesEnd:self];
+            [self.delegate AwesomeMenuItemTouchesEnd:self];
         }
     }
 }
@@ -95,7 +91,7 @@ highlightedContentImage:(UIImage *)hcimg;
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
-    [_contentImageView setHighlighted:highlighted];
+    [self.contentImageView setHighlighted:highlighted];
 }
 
 

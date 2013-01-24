@@ -46,7 +46,7 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor blueColor];
+        self.backgroundColor = [UIColor clearColor];
 		
 		self.nearRadius = kAwesomeMenuDefaultNearRadius;
 		self.endRadius = kAwesomeMenuDefaultEndRadius;

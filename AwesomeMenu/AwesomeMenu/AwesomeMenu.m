@@ -68,6 +68,8 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
                                 highlightedContentImage:nil];
         _addButton.delegate = self;
         _addButton.center = self.startPoint;
+        _addButton.exclusiveTouch = YES;
+        self.exclusiveTouch = YES;
         
         [self addSubview:_addButton];
     }
@@ -123,19 +125,16 @@ static CGPoint RotateCGPointAroundCenter(CGPoint point, CGPoint center, float an
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
     // if the menu is animating, prevent touches
-    if (self.isAnimating)
-    {
+    if (self.isAnimating){
         return NO;
     }
     // if the menu state is expanding, everywhere can be touch
     // otherwise, only the add button are can be touch
-    if (self.isExpanding)
-    {
+    if (self.isExpanding){
         return YES;
     }
-    else
-    {
-    return [super pointInside:point withEvent:event];
+    else{
+        return [super pointInside:point withEvent:event];
     }
 }
 
